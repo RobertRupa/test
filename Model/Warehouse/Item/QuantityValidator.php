@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2018 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2019 Amasty (https://www.amasty.com)
  * @package Amasty_MultiInventory
  */
 
@@ -171,7 +171,7 @@ class QuantityValidator
                     if (($item->getProduct()->getSku() == $product->getSku())
                         && ($item->getItemId() != $quoteItem->getItemId())
                     ) {
-                        $requestedQty += $item->getQty();
+                        $requestedQty = $item->getQty();
                     }
                 }
             }
@@ -396,7 +396,11 @@ class QuantityValidator
         if (is_array($messages)) {
             /** @var \Magento\Framework\Phrase $messagePhrase */
             foreach ($messages as $messagePhrase) {
-                $text = $messagePhrase->getText();
+                if ($messagePhrase instanceof \Magento\Framework\Phrase) {
+                    $text = $messagePhrase->getText();
+                } else {
+                    $text = $messagePhrase;
+                }
                 if (strpos($text, 'We don\'t have') !== false) {
                     $item->removeMessageByText($messagePhrase);
                     $item->removeErrorInfosByParams(['message' => $messagePhrase]);

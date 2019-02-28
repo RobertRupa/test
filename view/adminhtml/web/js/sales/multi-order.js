@@ -64,7 +64,7 @@ define(
                     });
                 }
             },
-            addSimple: function (tr, parent, value, self) {
+            addSimple: function (tr, index, value, self) {
                 if (!isNaN(tr) && tr != -1) {
                     if (self.globals.addSelect) {
                         var select = '<select class="admin__control-select warehouse-select" data-index="' + index + '" name="shipment[warehouse][' + index + ']">';

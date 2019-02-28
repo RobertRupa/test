@@ -2,7 +2,7 @@
 <!--
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2018 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2019 Amasty (https://www.amasty.com)
  * @package Amasty_MultiInventory
  */
 -->
@@ -155,6 +155,9 @@
     </type>
     <type name="Magento\Bundle\Model\ResourceModel\Option\Collection">
         <plugin name="aminventoryBundleReload" type="Amasty\MultiInventory\Plugin\Bundle\Model\ResourceModel\Option\Collection" />
+    </type>
+    <type name ="Magento\Bundle\Model\Product\Type">
+        <plugin name="aminventoryBundleStoreLock" type="Amasty\MultiInventory\Plugin\Bundle\Model\Product\Type" />
     </type>
     <type name="Magento\Checkout\Block\Onepage\Success">
         <plugin sortOrder="1" name="amastyMultiInventorySuccess" type="Amasty\MultiInventory\Plugin\Checkout\Block\Onepage\SuccessPlugin"/>

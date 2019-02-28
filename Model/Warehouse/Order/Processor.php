@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2018 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2019 Amasty (https://www.amasty.com)
  * @package Amasty_MultiInventory
  */
 
@@ -223,6 +223,7 @@ class Processor
                     $parentOrderItem->setQtyOrdered($qty);
                     $parentOrderItem = $this->changeTotal($parentOrderItem, $qty);
                     $this->orderItemRepository->save($parentOrderItem);
+                    $orderItem->setParentItem($parentOrderItem);
                 }
                 $orderItem->setQtyOrdered($qty);
                 if ($orderItem->getPrice() > 0) {
@@ -262,13 +263,13 @@ class Processor
         $newOrderItem->setQtyOrdered($qty);
         if ($parent) {
             $newOrderItem->setParentItemId($parent);
+            $newOrderItem->setParentItem($newParentOrderItem);
         }
         if ($newOrderItem->getPrice()) {
             $newOrderItem = $this->changeTotal($newOrderItem, $qty);
         }
         $this->orderItemRepository->save($newOrderItem);
         $order->addItem($newOrderItem);
-        $this->orderRepository->save($order);
 
         return $newOrderItem;
     }

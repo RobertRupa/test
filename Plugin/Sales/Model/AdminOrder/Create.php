@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2018 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2019 Amasty (https://www.amasty.com)
  * @package Amasty_MultiInventory
  */
 
@@ -32,7 +32,7 @@ class Create
         \Magento\Sales\Model\AdminOrder\Create $order
     ) {
         if ($this->system->isMultiEnabled() && $this->system->getDefinationWarehouse()) {
-            //$order->setSendConfirmation(false);
+            $order->setSendConfirmation(false);
         }
     }
 }

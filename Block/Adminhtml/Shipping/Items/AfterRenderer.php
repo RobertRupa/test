@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2018 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2019 Amasty (https://www.amasty.com)
  * @package Amasty_MultiInventory
  */
 
@@ -48,6 +48,11 @@ class AfterRenderer extends \Magento\Backend\Block\Template
     private $creditmemoRepository;
 
     /**
+     * @var \Magento\Sales\Api\OrderItemRepositoryInterface
+     */
+    private $orderItemRepository;
+
+    /**
      * AfterRenderer constructor.
      * @param \Magento\Backend\Block\Template\Context $context
      * @param Warehouse\Order\ItemFactory $itemFactory
@@ -67,6 +72,7 @@ class AfterRenderer extends \Magento\Backend\Block\Template
         \Magento\Sales\Api\InvoiceRepositoryInterface $invoiceRepository,
         \Magento\Sales\Api\CreditmemoRepositoryInterface $creditmemoRepository,
         \Magento\Framework\Json\EncoderInterface $jsonEncoder,
+        \Magento\Sales\Api\OrderItemRepositoryInterface $orderItemRepository,
         array $data = []
     ) {
         parent::__construct($context, $data);
@@ -76,6 +82,7 @@ class AfterRenderer extends \Magento\Backend\Block\Template
         $this->shipmentRepository = $shipmentRepository;
         $this->invoiceRepository = $invoiceRepository;
         $this->creditmemoRepository = $creditmemoRepository;
+        $this->orderItemRepository = $orderItemRepository;
     }
 
 
@@ -116,14 +123,18 @@ class AfterRenderer extends \Magento\Backend\Block\Template
 
         if ($order_id) {
             $collection = $this->itemFactory->create()->getCollection()->getDataOrder($order_id);
+
             foreach ($collection as $item) {
                 $fields = $item->toArray();
                 $idField = $fields['parent'];
                 if (!$idField) {
                     $idField = $fields['item'];
                 }
+                $itemType = $this->orderItemRepository->get($idField)->getProductType();
 
-                if ($fields['parent'] !== null) {
+                if ($fields['parent'] !== null
+                    && $itemType !== \Magento\ConfigurableProduct\Model\Product\Type\Configurable::TYPE_CODE
+                ) {
                     $data[$idField][$fields['item']] = [
                         'data' => $fields,
                         'list' => $this->itemWh->create()->getItems($fields['product'])

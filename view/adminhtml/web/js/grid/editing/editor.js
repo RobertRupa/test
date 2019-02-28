@@ -7,7 +7,7 @@ define([
     'Magento_Ui/js/grid/editing/editor'
 ], function ($, _, utils, layout, $t, Editor) {
     'use strict';
-
+    Editor.defaults.bulkEnabled = false;
     return Editor.extend({
         defaults: {
             templates: {

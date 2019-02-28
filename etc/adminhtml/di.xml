@@ -2,7 +2,7 @@
 <!--
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2018 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2019 Amasty (https://www.amasty.com)
  * @package Amasty_MultiInventory
  */
 -->
@@ -40,5 +40,14 @@
     </type>
     <type name="Magento\Catalog\Model\ResourceModel\Product">
         <plugin name="amSaveBefore" type="Amasty\MultiInventory\Plugin\Catalog\Model\ResourceModel\Product" />
+    </type>
+    <type name="Magento\AdvancedPricingImportExport\Controller\Adminhtml\Export\GetFilter">
+        <plugin name="Amasty_MultiInventory::ExportFilter" type="Amasty\MultiInventory\Plugin\Export\GetFilter"  />
+    </type>
+    <type name="Magento\ImportExport\Controller\Adminhtml\Export\GetFilter">
+        <plugin name="Amasty_MultiInventory::ExportFilter" type="Amasty\MultiInventory\Plugin\Export\GetFilter" />
+    </type>
+    <type name="Magento\ImportExport\Controller\Adminhtml\Export\Export">
+        <plugin name="Amasty_MultiInventory::ExportExport" type="Amasty\MultiInventory\Plugin\Export\Export" />
     </type>
 </config>

@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2018 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2019 Amasty (https://www.amasty.com)
  * @package Amasty_MultiInventory
  */
 
@@ -192,7 +192,7 @@ class Data extends AbstractHelper
     public function setShip(\Amasty\MultiInventory\Model\Warehouse\Order\Item $item, $entity, $ship = 0, $event)
     {
         $fields = $item->toArray();
-        if (count($entity) > 0) {
+        if ($entity) {
             $fields['qty_ordered'] = $this->getQtyToShip($entity, $fields);
             $itemId = ($fields['parent_item_id']) ? $fields['parent_item_id'] : $fields['order_item_id'];
             if (isset($entity['warehouse'][$itemId])) {

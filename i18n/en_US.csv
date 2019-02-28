@@ -1,3 +1,4 @@
+Field,Field
 Import,Import
 "Import Settings","Import Settings"
 "Product Identifier","Product Identifier"
@@ -6,6 +7,10 @@ Import,Import
 "Export & Save the current stock file before import?","Export & Save the current stock file before import?"
 "File to Import","File to Import"
 "Select File to Import","Select File to Import"
+Installed,Installed
+"Specify Store Locator settings properly See more details <a href=""%1"" target=""_blank"">here</a>","Specify Store Locator settings properly See more details <a href=""%1"" target=""_blank"">here</a>"
+"Not Installed","Not Installed"
+"Let customers quickly find the nearest offline stores with your products by displaying them on a handy Google map. See more details <a href=""https://amasty.com/store-locator-for-magento-2.html?utm_source=extension&utm_medium=backend&utm_campaign=from_multiInventory_to_storelocator_m2"" target=""_blank"">here.</a>","Let customers quickly find the nearest offline stores with your products by displaying them on a handy Google map. See more details <a href=""https://amasty.com/store-locator-for-magento-2.html?utm_source=extension&utm_medium=backend&utm_campaign=from_multiInventory_to_storelocator_m2"" target=""_blank"">here.</a>"
 Back,Back
 Delete,Delete
 "Are you sure you want to do this?","Are you sure you want to do this?"
@@ -257,6 +262,8 @@ Message:,Message:
 "Enable the Warehouse address auto complete while typing, using geolocation Google technology","Enable the Warehouse address auto complete while typing, using geolocation Google technology"
 "Google API","Google API"
 "Click <a href=""https://developers.google.com/maps/documentation/javascript/examples/places-autocomplete-addressform"" target=""_blank"">here</a> to get an API key. Required for Shipping from the warehouse closest to customer's area","Click <a href=""https://developers.google.com/maps/documentation/javascript/examples/places-autocomplete-addressform"" target=""_blank"">here</a> to get an API key. Required for Shipping from the warehouse closest to customer's area"
+"Store Locator","Store Locator"
+Status,Status
 "Warehouse stocks","Warehouse stocks"
 Product,Product
 "Stock Quantity","Stock Quantity"
@@ -269,7 +276,6 @@ Created,Created
 "Back up & Complete Import","Back up & Complete Import"
 "New Qty","New Qty"
 ...,...
-Status,Status
 "General Information","General Information"
 "Warehouse Name","Warehouse Name"
 "Warehouse Code","Warehouse Code"

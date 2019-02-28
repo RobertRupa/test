@@ -2,7 +2,7 @@
 <!--
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2018 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2019 Amasty (https://www.amasty.com)
  * @package Amasty_MultiInventory
  */
 -->
@@ -140,6 +140,14 @@
                 <field id="google_api" translate="label comment" type="text" sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Google API</label>
                     <comment><![CDATA[Click <a href="https://developers.google.com/maps/documentation/javascript/examples/places-autocomplete-addressform" target="_blank">here</a> to get an API key. Required for Shipping from the warehouse closest to customer's area]]></comment>
+                </field>
+            </group>
+            <group id="store_locator" translate="label" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Store Locator</label>
+                <attribute type="expanded">1</attribute>
+                <field id="label" translate="label comment" type="label" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Status</label>
+                    <frontend_model>Amasty\MultiInventory\Block\Adminhtml\System\Config\StoreLocator</frontend_model>
                 </field>
             </group>
         </section>

@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2018 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2019 Amasty (https://www.amasty.com)
  * @package Amasty_MultiInventory
  */
 
@@ -15,6 +15,8 @@ use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 use Magento\Framework\Model\AbstractModel;
 use Magento\Framework\EntityManager\EntityManager;
 use Magento\Framework\Model\ResourceModel\Db\Context;
+use Magento\Catalog\Api\ProductRepositoryInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
 
 class Item extends AbstractDb
 {
@@ -27,18 +29,31 @@ class Item extends AbstractDb
      * @var \Amasty\MultiInventory\Model\WarehouseFactory
      */
     private $factory;
+
     /**
      * @var \Magento\Framework\Indexer\CacheContext
      */
     private $cacheContext;
+
     /**
      * @var ManagerInterface
      */
     private $eventManager;
+
     /**
      * @var \Magento\Catalog\Model\ResourceModel\Product\Collection
      */
     private $productCollection;
+
+    /**
+     * @var ProductRepositoryInterface
+     */
+    private $productRepository;
+
+    /**
+     * @var \Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable
+     */
+    private $configurableProduct;
 
     /**
      * Initialize resource model
@@ -57,6 +72,8 @@ class Item extends AbstractDb
         \Magento\Framework\Indexer\CacheContext $cacheContext,
         ManagerInterface $eventManager,
         \Magento\Catalog\Model\ResourceModel\Product\Collection $productCollection,
+        ProductRepositoryInterface $productRepository,
+        \Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable $configurableProduct,
         $connectionName = null
     ) {
         parent::__construct($context, $connectionName);
@@ -65,6 +82,8 @@ class Item extends AbstractDb
         $this->cacheContext = $cacheContext;
         $this->eventManager = $eventManager;
         $this->productCollection = $productCollection;
+        $this->productRepository = $productRepository;
+        $this->configurableProduct = $configurableProduct;
     }
 
     /**
@@ -103,7 +122,7 @@ class Item extends AbstractDb
     }
 
     /**
-     * @param int    $warehouseId
+     * @param int $warehouseId
      * @param string $field
      *
      * @return string
@@ -133,7 +152,7 @@ class Item extends AbstractDb
     }
 
     /**
-     * @param int      $productId
+     * @param int $productId
      * @param int|null $warehouseId
      *
      * @return array
@@ -216,6 +235,22 @@ class Item extends AbstractDb
         return $this->getConnection()->fetchAll($select, $bind);
     }
 
+    public function getItemsOnTotalStock()
+    {
+        $select = $this->getConnection()->select()->from(
+            ['w' => $this->getMainTable()],
+            ['e.sku']
+        )
+            ->joinLeft(
+                ['e' => $this->getTable('catalog_product_entity')],
+                'w.product_id = e.entity_id'
+            )
+            ->group('product_id')
+            ->having('COUNT(warehouse_id) = 1');
+
+        return $this->getConnection()->fetchCol($select, 'sku');
+    }
+
     /**
      * @return int
      */
@@ -231,9 +266,22 @@ class Item extends AbstractDb
             ->from($this->productCollection->getTable('catalog_category_product'), ['category_id'])
             ->where('product_id = ?', $object->getProductId());
         $affectedCategories = $this->productCollection->getConnection()->fetchCol($select);
+        $parentProduct = $this->configurableProduct->getParentIdsByChild($object->getProductId());
 
         $this->cacheContext->registerEntities(Category::CACHE_TAG, $affectedCategories);
         $this->cacheContext->registerEntities(Product::CACHE_TAG, [$object->getProductId()]);
+
+        if (isset($parentProduct[0])) {
+            $this->cacheContext->registerEntities(Product::CACHE_TAG, [$parentProduct[0]]);
+            // Clean cache of parent product (for associated blocks such as option selector).
+            try {
+                /** @var \Magento\Catalog\Model\Product $product */
+                $product = $this->productRepository->getById($parentProduct[0]);
+                $product->cleanModelCache();
+            } catch (NoSuchEntityException $e) {
+                // do nothing
+            }
+        }
 
         $this->eventManager->dispatch('clean_cache_by_tags', ['object' => $this->cacheContext]);
     }

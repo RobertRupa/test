@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2018 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2019 Amasty (https://www.amasty.com)
  * @package Amasty_MultiInventory
  */
 
@@ -46,7 +46,7 @@ class SubmitObserver
         \Magento\Framework\Event\Observer $observer
     ) {
         /** @var  \Magento\Sales\Model\Order $order */
-        /*$order = $observer->getEvent()->getOrder();
+        $order = $observer->getEvent()->getOrder();
         if ($this->system->isMultiEnabled()) {
             $this->registry->unregister('multiinventory_cant_send_new_email');
             if (!$order->getCanSendNewEmailFlag()) {
@@ -55,6 +55,6 @@ class SubmitObserver
 
             // avoid send email for Core. Email will be sent by Multiinventory. Becouse order can be splitted
             $order->setCanSendNewEmailFlag(false);
-        }*/
+        }
     }
 }
